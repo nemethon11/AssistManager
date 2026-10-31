@@ -1,6 +1,7 @@
 // Запуск приложения и главный экран.
 import { S, load, today } from './store.js';
 import * as H from './habits.js';
+import { LEVELS, levelOf, createFlame } from './flame.js';
 
 const $ = id => document.getElementById(id);
 const CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="#0f1213" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
@@ -8,6 +9,9 @@ const FLAME_ICON = '<svg viewBox="0 0 24 24"><path fill="#d0573e" d="M12 2c1 4 6
 const SNOW_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="#7cc4ff" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M4.5 7.5l15 9M19.5 7.5l-15 9"/></svg>';
 const DAY_NAMES = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
+let flame = null;
+let preview = null;     // уровень, который смотрим в предпросмотре (null — настоящий)
+let previewT;
 let editing = false;
 let editId = null;      // id правимой привычки; null — создаём новую
 
@@ -65,12 +69,38 @@ function renderTop() {
   $('unit').textContent = H.plural(s) + ' подряд';
   $('best').textContent = Math.max(S.best, s);
   $('frz').textContent = S.freezes;
-  $('lvl').textContent = '';
-  let next = '';
+  const li = levelOf(s);
+  const L = LEVELS[li];
+  $('lvl').textContent = L.name;
+  $('lvl').style.color = L.c[1];
+  $('count').style.color = s ? L.c[2] : 'var(--muted)';
+  const nl = LEVELS[li + 1];
+  let next = nl ? 'до «' + nl.name + '» — ' + (nl.min - s) + ' ' + H.plural(nl.min - s) : 'максимальный уровень';
   if (S.habits.length && !S.complete[today()]) {
     next = (s ? 'Не дай огню погаснуть: ' : 'Зажги огонь: ') + 'осталось ' + H.leftCount() + ' из ' + S.habits.length;
   }
   $('next').textContent = next;
+  if (flame) flame.setLevel(preview != null ? preview : li);
+}
+
+function renderLevels() {
+  const li = levelOf(H.streak());
+  const box = $('levels');
+  box.textContent = '';
+  LEVELS.forEach((L, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip' + (i === li ? ' cur' : '') + (i > li ? ' locked' : '');
+    b.innerHTML = '<i style="background:radial-gradient(circle at 50% 70%,' + L.c[2] + ',' + L.c[1] + ' 45%,' + L.c[0] + ')"></i>' + L.name + ' <em>' + L.min + '+</em>';
+    b.onclick = () => {
+      preview = i;
+      flame.setLevel(i);
+      toast(i > li ? 'Предпросмотр: «' + L.name + '»' : '«' + L.name + '»');
+      clearTimeout(previewT);
+      previewT = setTimeout(() => { preview = null; renderTop(); }, 3500);
+    };
+    box.append(b);
+  });
 }
 
 function renderWeek() {
@@ -90,11 +120,18 @@ function render() {
   renderTop();
   renderHabits();
   renderWeek();
+  renderLevels();
 }
 
 /* ---------- действия ---------- */
 function showEvents(ev) {
-  if (ev.dayDone) toast('День засчитан');
+  if (ev.dayDone) {
+    flame.burst();
+    const c = $('count');
+    c.classList.add('bump');
+    setTimeout(() => c.classList.remove('bump'), 420);
+    toast('День засчитан');
+  }
   if (ev.freeze) setTimeout(() => toast('+1 заморозка за неделю огня'), 1600);
 }
 
@@ -169,6 +206,8 @@ $('addBtn').onclick = () => openSheet(null);
 
 /* ---------- старт ---------- */
 load();
+flame = createFlame($('flame'), levelOf(H.streak()));
+$('flame').addEventListener('click', () => flame.poke());
 if (H.applyFreezes()) setTimeout(() => toast('Заморозка спасла серию'), 600);
 H.recompute();
 render();
