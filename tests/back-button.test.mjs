@@ -68,7 +68,7 @@ $('editBtn').click(); ok(!hid('editor'), 'включили режим правк
 back(); ok(hid('editor') && minimized === 1, '«Назад» выходит из режима правки, приложение не сворачивается');
 
 // окно правки привычки
-$('editBtn').click(); $('habits').children[0].click();
+$('editBtn').click(); $('habits').querySelector('.habit').click();
 ok(!hid('sheet'), 'открыто окно правки привычки');
 back(); ok(hid('sheet') && !hid('editor') && minimized === 1, '«Назад» закрывает окно привычки, режим правки остаётся');
 back(); ok(hid('editor'), 'ещё «Назад» — выход из правки');
@@ -78,7 +78,7 @@ $('gearBtn').click(); ok(!hid('settingsView'), 'настройки открыт�
 back(); ok(hid('settingsView') && minimized === 1, '«Назад» закрывает настройки');
 
 // таймер (у «Английский — 5 минут» есть таймер)
-$('habits').children[0].click(); ok(!hid('timerView') && document.body.classList.contains('covered'), 'таймер открыт');
+$('habits').querySelector('.habit').click(); ok(!hid('timerView') && document.body.classList.contains('covered'), 'таймер открыт');
 back(); ok(hid('timerView') && !document.body.classList.contains('covered'), '«Назад» закрывает таймер и снимает «закрытость» главного экрана');
 
 // читалка + лист «Книги»

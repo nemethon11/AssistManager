@@ -98,6 +98,15 @@ export function updateHabit(id, { name, minutes, reading }) {
   if (h.kind === 'reading' && !h.minutes) h.minutes = 10;
   save();
 }
+// Сдвинуть привычку в списке: delta = -1 (вверх) или +1 (вниз). Возвращает true, если порядок изменился.
+export function moveHabit(id, delta) {
+  const i = S.habits.findIndex(h => h.id === id);
+  const j = i + delta;
+  if (i < 0 || j < 0 || j >= S.habits.length) return false;
+  [S.habits[i], S.habits[j]] = [S.habits[j], S.habits[i]];
+  save();
+  return true;
+}
 export function removeHabit(id) {
   S.habits = S.habits.filter(h => h.id !== id);
   recompute();

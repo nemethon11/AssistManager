@@ -75,7 +75,24 @@ function renderHabits() {
       b.append(go);
     }
     b.onclick = () => (editing ? openSheet(h.id) : tapHabit(h));
-    box.append(b);
+    if (!editing) { box.append(b); return; }
+
+    // В режиме правки рядом со строкой — кнопки «вверх / вниз» для смены порядка.
+    const row = document.createElement('div');
+    row.className = 'hrow';
+    const mv = document.createElement('div');
+    mv.className = 'mv';
+    [['▲', -1, 'Выше'], ['▼', 1, 'Ниже']].forEach(([sym, d, label]) => {
+      const m = document.createElement('button');
+      m.type = 'button';
+      m.textContent = sym;
+      m.setAttribute('aria-label', label + ': ' + h.name);
+      m.disabled = (d < 0 && i === 0) || (d > 0 && i === S.habits.length - 1);
+      m.onclick = () => { if (H.moveHabit(h.id, d)) renderHabits(); };
+      mv.append(m);
+    });
+    row.append(b, mv);
+    box.append(row);
   });
 }
 

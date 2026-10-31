@@ -19,6 +19,7 @@ const tests = [
   ['reading-session.test.mjs', www, 'чтение как привычка'],
   ['app.test.mjs', www, 'запуск, XP, ранги, звуки, копия'],
   ['back-button.test.mjs', www, 'кнопка «Назад», отступы'],
+  ['reorder.test.mjs', www, 'порядок привычек'],
 ];
 
 let total = 0, failed = 0;

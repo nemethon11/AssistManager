@@ -58,6 +58,12 @@
 .habit .ic svg { width: 16px; height: 16px; opacity: 0; transition: opacity .3s; }
 .habit .txt { flex: 1; min-width: 0; }
 .habit .name { font-weight: 700; overflow-wrap: anywhere; }
+.hrow { display: flex; gap: 6px; align-items: stretch; }
+.hrow .habit { flex: 1; min-width: 0; }
+.mv { display: flex; flex-direction: column; gap: 4px; flex: none; }
+.mv button { flex: 1; width: 44px; background: var(--card); border: 1px solid var(--line); color: var(--ochre); font-size: 14px; }
+.mv button:disabled { opacity: .25; cursor: default; }
+.mv button:active:not(:disabled) { border-color: var(--ochre); }
 .habit .hn { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: .35em; }
 .habit.done .hn { color: var(--ochre); }
 .habit.done .nm { color: var(--name); }
