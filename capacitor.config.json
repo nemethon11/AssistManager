@@ -1,0 +1,6 @@
+﻿{
+  "appId": "com.nemethon.assistmanager",
+  "appName": "AssistManager",
+  "webDir": "www",
+  "android": { "allowMixedContent": false }
+}
