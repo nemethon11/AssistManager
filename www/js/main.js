@@ -4,6 +4,7 @@ import * as H from './habits.js';
 import { LEVELS, levelOf, createFlame } from './flame.js';
 import { secsToday } from './timer.js';
 import { initTimerView, openTimer } from './timerview.js';
+import { openReader, currentBookInfo } from './reader.js';
 
 const $ = id => document.getElementById(id);
 const CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="#0f1213" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
@@ -125,6 +126,12 @@ function render() {
   renderLevels();
 }
 
+async function renderBook() {
+  const info = await currentBookInfo();
+  $('bookTitle').textContent = info.title;
+  $('bookPct').textContent = 'прочитано ' + info.pct + '%';
+}
+
 /* ---------- действия ---------- */
 function showEvents(ev) {
   if (ev.dayDone) {
@@ -211,6 +218,8 @@ $('addBtn').onclick = () => openSheet(null);
 load();
 flame = createFlame($('flame'), levelOf(H.streak()));
 $('flame').addEventListener('click', () => flame.poke());
+$('readBtn').onclick = () => openReader({ onClose: renderBook });
+renderBook();
 initTimerView({
   toast,
   onChange: ev => { render(); showEvents(ev || {}); },

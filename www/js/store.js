@@ -26,6 +26,8 @@ function fresh() {
     freezes: 0,
     best: 0,
     awarded: '',    // дата, когда выдана последняя заморозка
+    // Читалка: текущая книга, место в каждой книге (индекс исходного абзаца) и настройки.
+    reader: { current: 'sample', pos: {}, mode: 'short', fs: 19, speed: 1 },
   };
 }
 
@@ -42,6 +44,7 @@ export function load() {
 export function normalize(d) {
   const f = fresh();
   for (const k of Object.keys(f)) if (d[k] === undefined) d[k] = f[k];
+  d.reader = Object.assign({}, f.reader, d.reader);
   d.habits.forEach(h => { h.kind = h.kind || 'check'; h.minutes = h.minutes || 0; });
   return d;
 }

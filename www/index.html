@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/home.css">
 <link rel="stylesheet" href="css/timer.css">
+<link rel="stylesheet" href="css/reader.css">
 </head>
 <body>
 <main class="wrap" id="home">
@@ -30,6 +31,14 @@
     <div id="editor" hidden>
       <button class="btn add-btn" id="addBtn" type="button">+ Новая привычка</button>
       <p class="hint">Делай их крошечными. День засчитывается, когда отмечены все.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Книга</h2><small id="bookPct"></small></div>
+    <div class="bookcard">
+      <div class="bk-title" id="bookTitle">—</div>
+      <button class="opt first" id="readBtn" type="button"><span class="num">1.</span> <span>«Читать.»</span></button>
     </div>
   </section>
 
@@ -60,6 +69,73 @@
   <div class="tv-opts">
     <button class="opt first" id="tvToggle" type="button"><span class="num">1.</span> <span id="tvToggleT">«Начать.»</span></button>
     <button class="opt" id="tvManual" type="button"><span class="num">2.</span> <span id="tvManualT">«Отметить без таймера.»</span></button>
+  </div>
+</div>
+
+<!-- Читалка «Абзац за абзацем» -->
+<div class="reader" id="readerView" hidden>
+  <canvas id="paint" aria-hidden="true"></canvas>
+  <div class="app">
+    <div class="top col">
+      <button class="tbtn" id="rClose" type="button" aria-label="Закрыть читалку">←</button>
+      <div class="meta">
+        <div class="btitle" id="btitle">—</div>
+        <div class="stat" id="stat"></div>
+      </div>
+      <div class="hud" id="rHud"></div>
+      <button class="tbtn" id="setBtn" type="button" aria-label="Настройки чтения">Аа</button>
+      <button class="tbtn" id="libBtn" type="button">Книги</button>
+    </div>
+    <div class="feed" id="feed"><div class="feed-in col" id="feedIn"></div></div>
+    <div class="bottom col">
+      <div class="opts">
+        <button class="mini-btn" id="backBtn" type="button" aria-label="Назад на абзац">◂ Назад</button>
+        <button class="opt first" id="nextBtn" type="button"><span class="num">1. -</span><span class="t" id="nextTxt">«Дальше.»</span></button>
+        <button class="mini-btn" id="autoBtn" type="button">Авто</button>
+      </div>
+    </div>
+    <div class="rail" aria-hidden="true"><i id="progBar"></i></div>
+  </div>
+
+  <div class="rsheet" id="lib" hidden>
+    <div class="top col"><h2 style="flex:1">Книги</h2><button class="tbtn" id="libClose" type="button">Читать</button></div>
+    <div class="sheet-body col">
+      <div class="sec">Добавить книгу</div>
+      <label class="upload"><input type="file" id="file"><b>Выбрать файл</b><span>EPUB, FB2, PDF или TXT</span></label>
+      <div class="msg" id="libMsg" role="status"></div>
+      <div class="sec">Или вставить текст</div>
+      <input class="field" id="pasteTitle" placeholder="Название">
+      <textarea class="field" id="pasteText" placeholder="Вставь сюда текст. Абзацы разделяй переносом строки."></textarea>
+      <div class="row"><button class="pill solid" id="pasteAdd" type="button">Добавить</button></div>
+      <div class="sec">Библиотека</div>
+      <div class="books" id="books"></div>
+      <p class="note">Книги и место, где ты остановился, хранятся только на этом телефоне.</p>
+    </div>
+  </div>
+
+  <div class="rsheet" id="set" hidden>
+    <div class="top col"><h2 style="flex:1">Настройки чтения</h2><button class="tbtn" id="setClose" type="button">Готово</button></div>
+    <div class="sheet-body col">
+      <div class="sec">Размер порции</div>
+      <div class="row" id="modeRow">
+        <button class="pill" data-mode="para" type="button">Целый абзац</button>
+        <button class="pill" data-mode="short" type="button">Короче (2–3 предложения)</button>
+      </div>
+      <p class="note">«Короче» режет длинные абзацы на части, чтобы за раз было не больше пары строк.</p>
+      <div class="sec">Шрифт</div>
+      <div class="row">
+        <button class="pill" id="fsDown" type="button">А −</button>
+        <button class="pill" id="fsUp" type="button">А +</button>
+        <span class="note" id="fsVal" style="align-self:center;margin:0"></span>
+      </div>
+      <div class="sec">Авточтение</div>
+      <div class="row" id="speedRow">
+        <button class="pill" data-speed="0.7" type="button">Медленно</button>
+        <button class="pill" data-speed="1" type="button">Обычно</button>
+        <button class="pill" data-speed="1.5" type="button">Быстро</button>
+      </div>
+      <p class="note">В режиме «Авто» следующий кусок появляется сам; пауза зависит от длины текста.</p>
+    </div>
   </div>
 </div>
 
