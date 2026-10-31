@@ -4,6 +4,7 @@ import { S, save } from './store.js';
 import * as Lib from './library.js';
 import { parseFile, parseTxt, norm } from './parsers.js';
 import { paint } from './paint.js';
+import { findInItems } from './booksearch.js';
 
 const $ = id => document.getElementById(id);
 const WINDOW = 30;                       // сколько кусков держим на экране
@@ -235,8 +236,77 @@ async function onFile(e) {
   e.target.value = '';
 }
 
+/* ---------- поиск, закладки, переходы ---------- */
+// Номер абзаца, который показан последним (то, что читаешь сейчас).
+const currentSrc = () => (pos > 0 && chunks[pos - 1] ? chunks[pos - 1].src : -1);
+
+function markHere() {
+  const src = currentSrc();
+  if (!book || src < 0) return 'Сначала прочитай хотя бы абзац.';
+  const text = norm(book.items[src].s).slice(0, 100);
+  return Lib.addMark(book.id, src, text) ? 'Закладка поставлена.' : 'Здесь закладка уже есть.';
+}
+
+// Перейти к месту: rawPos — индекс первого ещё не показанного абзаца. Прежнее место запоминаем, чтобы можно было вернуться.
+async function jump(rawPos, remember = true) {
+  if (!book) return;
+  if (remember) Lib.setBack(book.id, Lib.getPos(book.id));
+  Lib.setPos(book.id, Math.max(0, Math.min(rawPos, book.items.length)));
+  closeSheet('find'); closeSheet('set');
+  await openBook(book);
+  if (hooks.onActivity) hooks.onActivity();
+}
+
+function renderFind(message) {
+  $('findMsg').textContent = message || '';
+  const q = $('findQ').value;
+  const box = $('finds');
+  box.textContent = '';
+  if (q.trim().length >= 2 && book) {
+    const res = findInItems(book.items, q);
+    if (!res.length) box.textContent = 'Ничего не нашлось.';
+    res.forEach(r => {
+      const b = document.createElement('button');
+      b.className = 'found';
+      b.type = 'button';
+      const mk = document.createElement('mark');
+      mk.textContent = r.match;
+      b.append(document.createTextNode(r.before), mk, document.createTextNode(r.after));
+      b.onclick = () => jump(r.src + 1);
+      box.append(b);
+    });
+    if (res.more) { const n = document.createElement('div'); n.className = 'note'; n.textContent = 'Показаны первые ' + res.length + '. Уточни запрос.'; box.append(n); }
+  }
+
+  const marks = $('marks');
+  marks.textContent = '';
+  const list = book ? Lib.getMarks(book.id) : [];
+  if (!list.length) marks.innerHTML = '<div class="note">Закладок пока нет. Пункт «Поставить закладку здесь» в меню «Аа».</div>';
+  list.forEach(m => {
+    const row = document.createElement('div');
+    row.className = 'mark-row';
+    const go = document.createElement('button');
+    go.type = 'button'; go.className = 'found';
+    go.textContent = '★ ' + m.text;
+    go.onclick = () => jump(m.src + 1);
+    const del = document.createElement('button');
+    del.type = 'button'; del.className = 'del'; del.textContent = '×';
+    del.setAttribute('aria-label', 'Удалить закладку');
+    del.onclick = () => { Lib.removeMark(book.id, m.ts); renderFind(); };
+    row.append(go, del);
+    marks.append(row);
+  });
+
+  $('backRow').hidden = !(book && Lib.getBack(book.id) !== null);
+}
+
 /* ---------- листы: книги и настройки ---------- */
-function openSheet(id) { stopAuto(); $(id).hidden = false; if (id === 'lib') renderBooks(); }
+function openSheet(id) {
+  stopAuto();
+  $(id).hidden = false;
+  if (id === 'lib') renderBooks();
+  if (id === 'find') renderFind();
+}
 function closeSheet(id) { $(id).hidden = true; }
 
 function applyPrefs() {
@@ -258,7 +328,7 @@ function wire() {
   };
   feed().addEventListener('click', () => { if (getSelection().toString()) return; next(); });
   document.addEventListener('keydown', e => {
-    if ($('readerView').hidden || !$('lib').hidden || !$('set').hidden || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if ($('readerView').hidden || !$('lib').hidden || !$('set').hidden || !$('find').hidden || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
     if ([' ', 'ArrowRight', 'Enter', 'ArrowDown'].includes(e.key)) { e.preventDefault(); next(); }
     if (['ArrowLeft', 'ArrowUp'].includes(e.key)) { e.preventDefault(); back(); }
   });
@@ -269,6 +339,19 @@ function wire() {
   $('setBtn').onclick = () => openSheet('set');
   $('setClose').onclick = () => closeSheet('set');
   $('rClose').onclick = closeReader;
+
+  // меню «Аа»: поиск, закладки
+  $('menuFind').onclick = () => { closeSheet('set'); openSheet('find'); };
+  $('menuMark').onclick = () => { const msg = markHere(); closeSheet('set'); openSheet('find'); renderFind(msg); };
+  $('findClose').onclick = () => closeSheet('find');
+  let findT;
+  $('findQ').oninput = () => { clearTimeout(findT); findT = setTimeout(() => renderFind(), 250); };
+  $('retBtn').onclick = () => {
+    const raw = Lib.getBack(book.id);
+    if (raw === null) return;
+    Lib.clearBack(book.id);
+    jump(raw, false);
+  };
 
   $('file').onchange = onFile;
   $('pasteAdd').onclick = async () => {
@@ -308,7 +391,7 @@ export async function openReader(opts = {}) {
 
 export function closeReader() {
   stopAuto();
-  $('lib').hidden = true; $('set').hidden = true;
+  $('lib').hidden = true; $('set').hidden = true; $('find').hidden = true;
   $('readerView').hidden = true;
   if (wake) { try { wake.release(); } catch (e) { /* уже отпущен */ } wake = null; }
   const h = hooks; hooks = {};

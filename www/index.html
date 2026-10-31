@@ -207,9 +207,30 @@
     </div>
   </div>
 
-  <div class="rsheet" id="set" hidden>
-    <div class="top col"><h2 style="flex:1">Настройки чтения</h2><button class="tbtn" id="setClose" type="button">Готово</button></div>
+  <div class="rsheet" id="find" hidden>
+    <div class="top col"><h2 style="flex:1">Поиск и закладки</h2><button class="tbtn" id="findClose" type="button">Назад</button></div>
     <div class="sheet-body col">
+      <input class="field" id="findQ" type="search" placeholder="Слово или фраза из книги" autocomplete="off" enterkeyhint="search">
+      <div class="msg" id="findMsg" role="status"></div>
+      <div class="finds" id="finds"></div>
+      <div id="backRow" hidden>
+        <div class="sec">Вернуться</div>
+        <button class="opt" id="retBtn" type="button"><span class="num">1.</span> <span>«Туда, где я читал.»</span></button>
+      </div>
+      <div class="sec">Закладки</div>
+      <div class="marks" id="marks"></div>
+      <p class="note">Переход открывает выбранное место. Прежнее место запоминается, и сюда можно вернуться.</p>
+    </div>
+  </div>
+
+  <div class="rsheet" id="set" hidden>
+    <div class="top col"><h2 style="flex:1">Меню чтения</h2><button class="tbtn" id="setClose" type="button">Готово</button></div>
+    <div class="sheet-body col">
+      <div class="sec">Книга</div>
+      <div class="menu-opts">
+        <button class="opt" id="menuFind" type="button"><span class="num">1.</span> <span>«Поиск и закладки.»</span></button>
+        <button class="opt" id="menuMark" type="button"><span class="num">2.</span> <span>«Поставить закладку здесь.»</span></button>
+      </div>
       <div class="sec">Размер порции</div>
       <div class="row" id="modeRow">
         <button class="pill" data-mode="para" type="button">Целый абзац</button>

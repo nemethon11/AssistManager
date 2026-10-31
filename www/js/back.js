@@ -12,6 +12,7 @@ export function goBack(closeHabitSheet, isEditing, stopEditing) {
   if (open('settingsView')) { $('setBack').click(); return true; }
   if (open('historyView')) { $('hiBack').click(); return true; }
   if (open('readerView')) {
+    if (open('find')) { $('findClose').click(); return true; }
     if (open('lib')) { $('libClose').click(); return true; }
     if (open('set')) { $('setClose').click(); return true; }
     $('rClose').click();

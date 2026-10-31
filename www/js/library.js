@@ -67,6 +67,8 @@ export async function addBook(title, items) {
 export async function removeBook(id) {
   await Books.del(id);
   delete S.reader.pos[id];
+  delete S.reader.marks[id];
+  delete S.reader.back[id];
   if (S.reader.current === id) S.reader.current = 'sample';
   save();
 }
@@ -74,4 +76,23 @@ export async function removeBook(id) {
 // Место в книге — индекс первого ещё не показанного исходного абзаца.
 export const getPos = id => S.reader.pos[id] || 0;
 export function setPos(id, v) { S.reader.pos[id] = v; save(); }
+/* ---------- закладки и «вернуться назад» ---------- */
+export const getMarks = id => (S.reader.marks[id] || []).slice().sort((a, b) => a.src - b.src);
+
+// Добавить закладку на абзац src. Возвращает false, если такая уже есть.
+export function addMark(id, src, text) {
+  const list = S.reader.marks[id] || (S.reader.marks[id] = []);
+  if (list.some(m => m.src === src)) return false;
+  list.push({ src, text, ts: Date.now() });
+  save();
+  return true;
+}
+export function removeMark(id, ts) {
+  S.reader.marks[id] = (S.reader.marks[id] || []).filter(m => m.ts !== ts);
+  save();
+}
+export const getBack = id => (id in S.reader.back ? S.reader.back[id] : null);
+export function setBack(id, rawPos) { S.reader.back[id] = rawPos; save(); }
+export function clearBack(id) { delete S.reader.back[id]; save(); }
+
 export const progressPct = b => Math.min(100, Math.round(getPos(b.id) / (b.items.length || 1) * 100));

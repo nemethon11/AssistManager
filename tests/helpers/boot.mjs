@@ -35,7 +35,10 @@ export async function boot(wwwPath, { capacitor = null, startApp = true, storage
   w.matchMedia = globalThis.matchMedia; w.requestAnimationFrame = () => 0;
   globalThis.setInterval = () => 1; globalThis.clearInterval = () => {};
   const realTimeout = globalThis.setTimeout;
-  globalThis.setTimeout = () => 1; globalThis.clearTimeout = () => {};
+  // таймеры не идут сами: копим их и запускаем вручную через flush()
+  const pending = [];
+  globalThis.setTimeout = f => { pending.push(f); return pending.length; }; globalThis.clearTimeout = () => {};
+  const flush = () => { const list = pending.splice(0); list.forEach(f => { try { f(); } catch (e) { /* как в браузере: ошибка в таймере не ломает остальное */ } }); };
   Object.defineProperty(w.HTMLElement.prototype, 'offsetWidth', { get: () => 100 });
   w.HTMLElement.prototype.scrollTo = function () {};
 
@@ -48,5 +51,5 @@ export async function boot(wwwPath, { capacitor = null, startApp = true, storage
   St.load();
   if (startApp) { await import(url + '/js/main.js'); await sleep(); }
   const done = () => process.exit(fails ? 1 : 0);
-  return { w, $, url, sleep, ok, done, St, store };
+  return { w, $, url, sleep, ok, done, St, store, flush };
 }

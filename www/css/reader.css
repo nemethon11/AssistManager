@@ -80,6 +80,14 @@ textarea.field { min-height: 140px; resize: vertical; margin-top: 8px; }
 .pill { font-family: var(--f-ui); text-transform: uppercase; letter-spacing: .1em; font-size: 13px; padding: 10px 14px; border: 1px solid var(--line); color: var(--muted); }
 .pill.on { border-color: var(--ochre); color: var(--ochre); }
 .pill.solid { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.menu-opts { display: flex; flex-direction: column; }
+.finds, .marks { display: flex; flex-direction: column; margin-top: 6px; }
+.found { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 16px; line-height: 1.45; color: var(--fg); overflow-wrap: anywhere; }
+.found mark { background: rgba(207, 156, 76, .25); color: var(--ochre); padding: 0 2px; }
+.mark-row { display: flex; align-items: center; gap: 6px; }
+.mark-row .found { flex: 1; min-width: 0; }
+.mark-row .del { font-size: 22px; padding: 4px 12px; }
+#findQ { margin-top: 6px; }
 .msg { font-size: 14px; color: var(--accent); margin-top: 10px; min-height: 1.2em; }
 .note { font-size: 14px; color: var(--muted); line-height: 1.5; margin-top: 8px; }
 @media (prefers-reduced-motion: reduce) { .chunk.enter { animation: none; } .chunk, .chapter, .rail i { transition: none; } }

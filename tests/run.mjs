@@ -21,6 +21,7 @@ const tests = [
   ['back-button.test.mjs', www, 'кнопка «Назад», отступы'],
   ['reorder.test.mjs', www, 'порядок привычек'],
   ['history.test.mjs', www, 'история: календарь, график, итоги'],
+  ['book-search.test.mjs', www, 'поиск и закладки в читалке'],
 ];
 
 let total = 0, failed = 0;
