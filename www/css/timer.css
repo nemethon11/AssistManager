@@ -1,0 +1,30 @@
+/* Экран таймера привычки и карточка «Привычка выполнена». */
+.screen { position: fixed; inset: 0; z-index: 15; background: var(--bg); display: flex; flex-direction: column; padding: env(safe-area-inset-top, 0px) 18px env(safe-area-inset-bottom, 0px); }
+.screen-top { display: flex; align-items: center; gap: 12px; padding: 12px 0; max-width: 34rem; width: 100%; margin: 0 auto; }
+.screen-title { flex: 1; min-width: 0; font-family: var(--f-read); font-weight: 700; text-transform: uppercase; letter-spacing: .02em; color: var(--name); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
+.tbtn { font-family: var(--f-ui); text-transform: uppercase; letter-spacing: .1em; font-size: 13px; padding: 8px 12px; color: var(--fg); border: 1px solid rgba(203, 196, 181, .25); background: rgba(9, 9, 9, .55); }
+
+.tv-body { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; max-width: 34rem; width: 100%; margin: 0 auto; }
+#tvFlame { width: 100%; max-width: 260px; aspect-ratio: 1 / 1.05; }
+.tv-clock { margin-top: -10px; font-family: var(--f-ui); font-weight: 300; font-size: 72px; letter-spacing: .04em; color: var(--name); font-variant-numeric: tabular-nums; line-height: 1; }
+.tv-clock.over { color: var(--ochre); }
+.tv-state { font-family: var(--f-ui); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); min-height: 1.2em; }
+.tv-bar { width: 70%; max-width: 280px; height: 3px; background: var(--line); margin-top: 8px; }
+.tv-bar i { display: block; height: 100%; width: 0; background: var(--ochre); transition: width .6s linear; }
+.skill { margin-top: 14px; padding: 0 12px; text-align: center; font-size: 15px; line-height: 1.5; color: var(--fg); max-width: 28rem; }
+.skill b { font-family: var(--f-ui); font-weight: 500; text-transform: uppercase; letter-spacing: .12em; font-size: 13px; color: var(--violet, #9d86e0); }
+
+/* Нумерованные «варианты реплик» */
+.tv-opts { max-width: 34rem; width: 100%; margin: 0 auto; border-top: 1px solid var(--line); padding: 8px 0 16px; display: flex; flex-direction: column; gap: 2px; }
+.opt { display: flex; gap: .45em; text-align: left; padding: 12px 6px; color: var(--accent); font-family: var(--f-read); font-size: 17px; line-height: 1.4; }
+.opt .num { color: var(--name); flex: none; font-variant-numeric: tabular-nums; }
+.opt:active { color: #f08a6e; }
+.opt.first { border: 1px solid rgba(208, 87, 62, .35); background: radial-gradient(ellipse at center, rgba(208, 87, 62, .16), transparent 75%); justify-content: center; padding: 16px 22px; font-size: 19px; }
+
+.done-card { position: fixed; inset: 0; z-index: 40; background: rgba(0, 0, 0, .82); display: grid; place-items: center; padding: 24px; animation: fade .35s ease-out; }
+.done-in { width: 100%; max-width: 24rem; background: var(--panel); border: 1px solid var(--ochre); padding: 26px 20px 12px; text-align: center; box-shadow: 0 0 60px rgba(255, 140, 40, .25); }
+.done-k { font-family: var(--f-disp); font-weight: 700; font-size: 26px; color: var(--ochre); }
+.done-n { margin-top: 8px; color: var(--name); font-weight: 700; text-transform: uppercase; letter-spacing: .03em; overflow-wrap: anywhere; }
+.done-in .opt { margin: 14px auto 0; }
+@keyframes fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .done-card { animation: none; } .tv-bar i { transition: none; } }

@@ -7,6 +7,7 @@
 <title>AssistManager</title>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/timer.css">
 </head>
 <body>
 <main class="wrap" id="home">
@@ -42,6 +43,35 @@
     <div class="levels" id="levels"></div>
   </section>
 </main>
+
+<!-- Экран таймера привычки -->
+<div class="screen" id="timerView" hidden>
+  <div class="screen-top">
+    <button class="tbtn" id="tvBack" type="button">← Назад</button>
+    <div class="screen-title" id="tvName"></div>
+  </div>
+  <div class="tv-body">
+    <canvas id="tvFlame" aria-hidden="true"></canvas>
+    <div class="tv-clock" id="tvClock">10:00</div>
+    <div class="tv-state" id="tvState"></div>
+    <div class="tv-bar"><i id="tvFill"></i></div>
+    <div class="skill" id="tvSkill"></div>
+  </div>
+  <div class="tv-opts">
+    <button class="opt first" id="tvToggle" type="button"><span class="num">1.</span> <span id="tvToggleT">«Начать.»</span></button>
+    <button class="opt" id="tvManual" type="button"><span class="num">2.</span> <span id="tvManualT">«Отметить без таймера.»</span></button>
+  </div>
+</div>
+
+<!-- Уведомление «Привычка выполнена» -->
+<div class="done-card" id="doneCard" hidden>
+  <div class="done-in">
+    <div class="done-k">Привычка выполнена</div>
+    <div class="done-n" id="doneName"></div>
+    <div class="skill" id="doneSkill"></div>
+    <button class="opt" id="doneOk" type="button"><span class="num">1.</span> <span>«Дальше.»</span></button>
+  </div>
+</div>
 
 <!-- Окно создания / правки привычки -->
 <div class="sheet" id="sheet" hidden>
