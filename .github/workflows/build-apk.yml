@@ -28,7 +28,8 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: android-actions/setup-android@v3
+      - name: Принятие лицензий Android SDK (сам SDK уже есть на раннере)
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
 
       - name: Установка зависимостей
         run: npm ci
