@@ -50,6 +50,7 @@ export function openTimer(h) {
   habit = h;
   $('tvName').textContent = h.name;
   $('timerView').hidden = false;
+  document.body.classList.add('covered');
   if (!flame) flame = createFlame($('tvFlame'), levelOf(H.streak()));
   else { flame.resize(); flame.setLevel(levelOf(H.streak())); }
 
@@ -66,6 +67,7 @@ export function closeTimer() {
   if (timer) { timer.destroy(); timer = null; }
   habit = null;
   $('timerView').hidden = true;
+  document.body.classList.remove('covered');
   cb.onChange({});
 }
 

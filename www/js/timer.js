@@ -40,6 +40,7 @@ export class HabitTimer {
     this.onTick = o.onTick || (() => {});
     this.onGoal = o.onGoal || (() => {});
     this.onState = o.onState || (() => {});
+    this.onAdd = o.onAdd || (() => {});     // вызывается с каждой порцией засчитанных секунд
     this.want = false;                       // пользователь хочет, чтобы время шло
     this.visible = !document.hidden;
     this.lastAct = Date.now();
@@ -116,6 +117,7 @@ export class HabitTimer {
     S.secs[t] = S.secs[t] || {};
     S.secs[t][this.id] = Math.round(((S.secs[t][this.id] || 0) + sec) * 10) / 10;
     this.unsaved += sec;
+    this.onAdd(sec);
     if (!this.reached && this.secs() >= this.goalSec) {
       this.reached = true;
       this._flush();

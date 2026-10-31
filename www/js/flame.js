@@ -78,6 +78,12 @@ export function createFlame(cv, startLevel = 0) {
   function frame(now) {
     const dt = Math.min(.05, (now - last) / 1000);
     last = now;
+    // Не рисуем, если огня не видно: экран скрыт, холст спрятан или главный экран закрыт читалкой/таймером.
+    if (document.hidden || cv.offsetWidth === 0 || (document.body.classList.contains('covered') && cv.closest('#home'))) {
+      requestAnimationFrame(frame);
+      return;
+    }
+    if (!W || !H) size();   // холст создали скрытым — размер узнаём, когда он появился
     const t = now / 1000;
     const L = LEVELS[target];
     const k = 1 - Math.pow(.02, dt);

@@ -5,6 +5,10 @@
 #flame { width: 100%; max-width: 340px; aspect-ratio: 1 / 1.05; display: block; cursor: pointer; touch-action: manipulation; }
 .bookcard { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
 .bk-title { font-weight: 700; text-transform: uppercase; letter-spacing: .02em; color: var(--name); overflow-wrap: anywhere; }
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px; }
+.stats div { background: var(--card); border: 1px solid var(--line); padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+.stats b { font-family: var(--f-disp); font-size: 20px; color: var(--ochre); font-variant-numeric: tabular-nums; }
+.stats span { font-family: var(--f-ui); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .levels { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .chip { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line); padding: 8px 12px 8px 9px; font-family: var(--f-ui); font-size: 13px; letter-spacing: .06em; }
 .chip i { width: 14px; height: 14px; border-radius: 50%; flex: none; }

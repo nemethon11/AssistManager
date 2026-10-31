@@ -4,7 +4,9 @@ import * as H from './habits.js';
 import { LEVELS, levelOf, createFlame } from './flame.js';
 import { secsToday } from './timer.js';
 import { initTimerView, openTimer } from './timerview.js';
-import { openReader, currentBookInfo } from './reader.js';
+import { currentBookInfo } from './reader.js';
+import { startReading } from './readsession.js';
+import { readStats, fmtDur } from './stats.js';
 
 const $ = id => document.getElementById(id);
 const CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="#0f1213" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
@@ -130,7 +132,20 @@ async function renderBook() {
   const info = await currentBookInfo();
   $('bookTitle').textContent = info.title;
   $('bookPct').textContent = 'прочитано ' + info.pct + '%';
+  renderStats();
 }
+
+function renderStats() {
+  const s = readStats();
+  $('stToday').textContent = fmtDur(s.todaySec);
+  $('stWeek').textContent = fmtDur(s.weekSec);
+  $('stTotal').textContent = fmtDur(s.totalSec);
+  $('stParas').textContent = s.parasToday;
+  $('stParasL').textContent = 'абзацев сегодня (всего ' + s.parasTotal + ')';
+}
+
+// Чтение закрыли или привычка выполнилась: обновить всё и показать праздничные сообщения.
+function onReadChange(ev) { render(); renderBook(); showEvents(ev || {}); }
 
 /* ---------- действия ---------- */
 function showEvents(ev) {
@@ -145,7 +160,8 @@ function showEvents(ev) {
 }
 
 function tapHabit(h) {
-  // Привычка с таймером открывает экран таймера (читалку подключим следующими шагами).
+  // «Чтение» открывает читалку с таймером; другая привычка с таймером — экран таймера.
+  if (h.kind === 'reading') { startReading(h, { onChange: onReadChange }); return; }
   if (h.minutes > 0) { openTimer(h); return; }
   const ev = H.toggle(h.id);
   try { navigator.vibrate && navigator.vibrate(ev.on ? 12 : 6); } catch (e) { /* без вибрации */ }
@@ -218,7 +234,7 @@ $('addBtn').onclick = () => openSheet(null);
 load();
 flame = createFlame($('flame'), levelOf(H.streak()));
 $('flame').addEventListener('click', () => flame.poke());
-$('readBtn').onclick = () => openReader({ onClose: renderBook });
+$('readBtn').onclick = () => startReading(null, { onChange: onReadChange });
 renderBook();
 initTimerView({
   toast,

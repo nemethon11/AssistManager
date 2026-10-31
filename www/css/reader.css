@@ -14,6 +14,15 @@
 .btitle { font-weight: 700; text-transform: uppercase; letter-spacing: .02em; font-size: 15px; color: var(--name); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stat { font-family: var(--f-ui); font-size: 12px; letter-spacing: .06em; color: var(--muted); font-variant-numeric: tabular-nums; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hud:empty { display: none; }
+/* шапка с таймером привычки и огоньком */
+.hud { display: flex; align-items: center; gap: 4px; flex: none; }
+.rh-flame { width: 34px; height: 36px; display: block; }
+.rh-t { display: flex; flex-direction: column; align-items: flex-end; line-height: 1; }
+.rh-clock { font-family: var(--f-ui); font-weight: 300; font-size: 24px; letter-spacing: .04em; color: var(--name); font-variant-numeric: tabular-nums; }
+.rh-clock.over { color: var(--ochre); }
+.rh-st { font-family: var(--f-ui); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); min-height: 10px; margin-top: 2px; }
+.hud.paused .rh-clock { opacity: .5; }
+.hud.paused .rh-flame { opacity: .45; }
 
 /* лента */
 .feed { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 70px); mask-image: linear-gradient(to bottom, transparent 0, #000 70px); }
