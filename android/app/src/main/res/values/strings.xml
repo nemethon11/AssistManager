@@ -4,4 +4,6 @@
     <string name="title_activity_main">AssistManager</string>
     <string name="package_name">com.nemethon.assistmanager</string>
     <string name="custom_url_scheme">com.nemethon.assistmanager</string>
+    <string name="widget_name">Огонёк</string>
+    <string name="widget_description">Огонёк, серия и сколько привычек осталось сегодня</string>
 </resources>
