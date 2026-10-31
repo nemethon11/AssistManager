@@ -3,17 +3,63 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
 <title>AssistManager</title>
-<style>
-  html,body{margin:0;height:100%;background:#14100e;color:#cbc4b5;font-family:Georgia,serif}
-  body{display:grid;place-items:center;text-align:center;padding:24px}
-  h1{color:#cf9c4c;font-weight:400}
-</style>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-  <div>
-    <h1>AssistManager</h1>
-    <p>Каркас собран. Огонёк скоро зажжётся.</p>
-  </div>
+<main class="wrap" id="home">
+  <section class="hearth" aria-label="Серия">
+    <div class="toast" id="toast" role="status"></div>
+    <div class="count" id="count">0</div>
+    <div class="unit" id="unit">дней подряд</div>
+    <div class="lvl" id="lvl"></div>
+    <div class="next" id="next"></div>
+    <div class="meta">
+      <span>Рекорд: <b id="best">0</b></span>
+      <span class="freeze">Заморозки: <b id="frz">0</b>/2</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Сегодня</h2><button class="link" id="editBtn" type="button">Изменить</button></div>
+    <div class="habits" id="habits"></div>
+    <div id="editor" hidden>
+      <button class="btn add-btn" id="addBtn" type="button">+ Новая привычка</button>
+      <p class="hint">Делай их крошечными. День засчитывается, когда отмечены все.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Неделя</h2><small id="weekNote"></small></div>
+    <div class="week" id="week"></div>
+  </section>
+</main>
+
+<!-- Окно создания / правки привычки -->
+<div class="sheet" id="sheet" hidden>
+  <form class="sheet-in" id="habitForm" autocomplete="off">
+    <h2 id="sheetTitle">Новая привычка</h2>
+    <label class="field-l" for="fName">Название</label>
+    <input class="field" id="fName" maxlength="60" placeholder="Например, «5 отжиманий»" required>
+
+    <label class="check-l"><input type="checkbox" id="fTimer"><span>Таймер</span></label>
+    <div class="minutes" id="minutesRow" hidden>
+      <label class="field-l" for="fMin">Длительность, минут</label>
+      <input class="field" id="fMin" type="number" inputmode="numeric" min="1" max="600" value="10">
+    </div>
+
+    <label class="check-l"><input type="checkbox" id="fReading"><span>Чтение — открывает читалку</span></label>
+
+    <div class="sheet-btns">
+      <button class="btn" type="submit">Сохранить</button>
+      <button class="btn ghost" id="fCancel" type="button">Отмена</button>
+    </div>
+    <button class="link danger" id="fDelete" type="button" hidden>Удалить привычку</button>
+  </form>
+</div>
+
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

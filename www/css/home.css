@@ -1,0 +1,43 @@
+/* Главный экран: серия, привычки на сегодня, неделя. */
+.wrap { max-width: 34rem; margin: 0 auto; padding: 12px 18px 40px; display: flex; flex-direction: column; gap: 26px; }
+
+.hearth { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 24px; }
+#flame { width: 100%; max-width: 340px; aspect-ratio: 1 / 1.05; display: block; cursor: pointer; touch-action: manipulation; }
+.count { font-family: var(--f-disp); font-weight: 700; font-size: 72px; line-height: 1; color: var(--name); font-variant-numeric: tabular-nums; transition: transform .35s cubic-bezier(.3, 1.6, .5, 1); }
+.count.bump { transform: scale(1.25); }
+.unit { color: var(--muted); font-size: 14px; }
+.lvl { font-family: var(--f-ui); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; margin-top: 6px; }
+.next { color: var(--muted); font-size: 14px; text-align: center; }
+.meta { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; color: var(--muted); font-size: 14px; margin-top: 4px; }
+.meta b { color: var(--name); font-variant-numeric: tabular-nums; }
+.freeze b { color: var(--ice); }
+
+.toast { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); z-index: 30; background: var(--panel); border: 1px solid var(--ochre); padding: 8px 14px; font-size: 14px; opacity: 0; transition: opacity .3s; pointer-events: none; max-width: 90vw; text-align: center; }
+.toast.on { opacity: 1; }
+
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.sec-head small { color: var(--muted); font-size: 13px; }
+
+.habits { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.habit { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line); padding: 14px 16px; transition: border-color .25s, background .25s, transform .12s; }
+.habit:active { transform: scale(.98); }
+.habit .ic { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; transition: all .3s; }
+.habit .ic svg { width: 16px; height: 16px; opacity: 0; transition: opacity .3s; }
+.habit .txt { flex: 1; min-width: 0; }
+.habit .name { font-weight: 700; overflow-wrap: anywhere; }
+.habit .sub { color: var(--muted); font-family: var(--f-ui); font-size: 12px; letter-spacing: .06em; margin-top: 2px; }
+.habit .go { flex: none; color: var(--muted); font-family: var(--f-ui); font-size: 13px; text-transform: uppercase; letter-spacing: .1em; }
+.habit.done { border-color: var(--ochre); background: rgba(207, 156, 76, .08); }
+.habit.done .ic { border-color: var(--ochre); background: var(--ochre); }
+.habit.done .ic svg { opacity: 1; }
+.add-btn { width: 100%; margin-top: 12px; }
+
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 12px; }
+.day { display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: var(--f-ui); font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+.dot { width: 100%; max-width: 38px; aspect-ratio: 1; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; }
+.dot svg { width: 55%; height: 55%; }
+.day.ok .dot { background: rgba(208, 87, 62, .2); border-color: var(--accent); }
+.day.fz .dot { background: rgba(124, 196, 255, .15); border-color: var(--ice); }
+.day.today span { color: var(--name); font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) { .count, .habit, .ic { transition: none; } }
