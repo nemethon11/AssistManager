@@ -1,6 +1,9 @@
-﻿{
-  "appId": "com.nemethon.assistmanager",
-  "appName": "AssistManager",
-  "webDir": "www",
-  "android": { "allowMixedContent": false }
+{
+    "appId":  "com.nemethon.assistmanager",
+    "appName":  "AssistManager",
+    "webDir":  "www",
+    "android":  {
+                    "allowMixedContent":  false
+                },
+    "backgroundColor":  "#0e0b13"
 }

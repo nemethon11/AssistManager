@@ -3,7 +3,8 @@ import { S, load, save, today } from './store.js';
 import * as H from './habits.js';
 import { LEVELS, levelOf, createFlame } from './flame.js';
 import { secsToday } from './timer.js';
-import { initTimerView, openTimer, showCard } from './timerview.js';
+import { initTimerView, openTimer, showCard, skillHtml } from './timerview.js';
+import { paint } from './paint.js';
 import { rankInfo, RANKS } from './xp.js';
 import { initSettings } from './settings.js';
 import * as Snd from './sound.js';
@@ -52,13 +53,17 @@ function renderHabits() {
     p.textContent = 'Список пуст. Добавь первую привычку — огонёк ждёт.';
     box.append(p);
   }
-  S.habits.forEach(h => {
+  S.habits.forEach((h, i) => {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'habit' + (H.isDone(h.id) ? ' done' : '');
     b.setAttribute('aria-pressed', H.isDone(h.id));
     b.innerHTML = '<span class="ic">' + CHECK + '</span><span class="txt"><div class="name"></div><div class="sub"></div></span>';
-    b.querySelector('.name').textContent = h.name;
+    // Привычки — как нумерованные «варианты реплик» в диалоге.
+    const nameEl = b.querySelector('.name');
+    nameEl.innerHTML = '<span class="hn"></span><span class="nm"></span>';
+    nameEl.querySelector('.hn').textContent = (i + 1) + '.';
+    nameEl.querySelector('.nm').textContent = h.name;
     b.querySelector('.sub').textContent = subtitle(h);
     if (editing) {
       const go = document.createElement('span');
@@ -88,7 +93,24 @@ function renderTop() {
     next = (s ? 'Не дай огню погаснуть: ' : 'Зажги огонь: ') + 'осталось ' + H.leftCount() + ' из ' + S.habits.length;
   }
   $('next').textContent = next;
+  $('skillLine').innerHTML = skillHtml(pickSkill(s));
   if (flame) flame.setLevel(preview != null ? preview : li);
+}
+
+// Внутренний голос: реплика «навыка» под состояние дня. Вариант зависит от даты, чтобы не мигал при каждой перерисовке.
+const SKILLS = {
+  empty: [['ВОЛЯ', 'Список пуст. Пустота — тоже выбор, но скучный.']],
+  none0: [['ЭЛЕКТРОХИМИЯ', 'Одна маленькая привычка. Всего одна. Давай.'], ['ВОЛЯ', 'Огонь сам себя не зажжёт. Увы.']],
+  noneStreak: [['ВОЛЯ', 'Огонь гаснет. Ты это допустишь?'], ['ЛОГИКА', 'Серия есть. Серии нужно кормление. Привычками.']],
+  some: [['ВЫНОСЛИВОСТЬ', 'Ты уже начал. Бросать на полпути — для слабаков и поэтов.'], ['ВОЛЯ', 'Ещё чуть-чуть. Ты можешь.']],
+  all: [['ЭСПРИ-ДЕ-КОР', 'Сегодня ты молодец. Завтра — снова.'], ['ВНУТРЕННЯЯ ИМПЕРИЯ', 'Огонь доволен. Он тоже умеет быть благодарным.']],
+};
+function pickSkill(streak) {
+  const left = H.leftCount(), total = S.habits.length;
+  const kind = !total ? 'empty' : !left ? 'all' : left === total ? (streak ? 'noneStreak' : 'none0') : 'some';
+  const list = SKILLS[kind];
+  const day = Math.floor(Date.now() / 86400000);
+  return list[(day + left) % list.length];
 }
 
 function renderLevels() {
@@ -275,6 +297,9 @@ $('addBtn').onclick = () => openSheet(null);
 
 /* ---------- старт ---------- */
 load();
+paint($('bg'));
+let bgT;
+window.addEventListener('resize', () => { clearTimeout(bgT); bgT = setTimeout(() => paint($('bg')), 200); });
 flame = createFlame($('flame'), levelOf(H.streak()));
 $('flame').addEventListener('click', () => { flame.poke(); Snd.crackle(6); });
 // Звук в браузере разрешён только после первого касания.

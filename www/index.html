@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0a">
 <title>AssistManager</title>
+<link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/home.css">
 <link rel="stylesheet" href="css/timer.css">
 <link rel="stylesheet" href="css/reader.css">
 </head>
 <body>
+<canvas id="bg" aria-hidden="true"></canvas>
 <main class="wrap" id="home">
   <div class="topbar"><span class="brand">AssistManager</span><button class="link" id="gearBtn" type="button">Настройки</button></div>
 
@@ -21,6 +23,7 @@
     <div class="unit" id="unit">дней подряд</div>
     <div class="lvl" id="lvl"></div>
     <div class="next" id="next"></div>
+    <div class="skill" id="skillLine"></div>
     <div class="meta">
       <span>Рекорд: <b id="best">0</b></span>
       <span class="freeze">Заморозки: <b id="frz">0</b>/2</span>
