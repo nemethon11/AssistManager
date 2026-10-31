@@ -1,4 +1,4 @@
-name: Сборка APK
+﻿name: РЎР±РѕСЂРєР° APK
 
 on:
   push:
@@ -28,23 +28,25 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Принятие лицензий Android SDK (сам SDK уже есть на раннере)
+      - name: РџСЂРёРЅСЏС‚РёРµ Р»РёС†РµРЅР·РёР№ Android SDK (СЃР°Рј SDK СѓР¶Рµ РµСЃС‚СЊ РЅР° СЂР°РЅРЅРµСЂРµ)
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
 
-      - name: Установка зависимостей
+      - name: РЈСЃС‚Р°РЅРѕРІРєР° Р·Р°РІРёСЃРёРјРѕСЃС‚РµР№
         run: npm ci
 
-      - name: Синхронизация веб-части с Android
+      - name: РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ РІРµР±-С‡Р°СЃС‚Рё СЃ Android
         run: npx cap sync android
 
-      - name: Сборка debug-APK
+      - name: РЎР±РѕСЂРєР° debug-APK
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
 
-      - name: Подготовка файла
+      - name: РџРѕРґРіРѕС‚РѕРІРєР° С„Р°Р№Р»Р°
         run: cp android/app/build/outputs/apk/debug/app-debug.apk AssistManager.apk
 
-      - name: Публикация в GitHub Releases
+      - name: РџСѓР±Р»РёРєР°С†РёСЏ РІ GitHub Releases
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -52,7 +54,7 @@ jobs:
           MSG=$(git log -1 --pretty=%s)
           gh release delete latest --yes --cleanup-tag || true
           gh release create latest AssistManager.apk \
-            --title "AssistManager (сборка $SHORT)" \
-            --notes "Последняя сборка из ветки main. Последнее изменение: $MSG" \
+            --title "AssistManager (СЃР±РѕСЂРєР° $SHORT)" \
+            --notes "РџРѕСЃР»РµРґРЅСЏСЏ СЃР±РѕСЂРєР° РёР· РІРµС‚РєРё main. РџРѕСЃР»РµРґРЅРµРµ РёР·РјРµРЅРµРЅРёРµ: $MSG" \
             --target "$GITHUB_SHA" \
             --latest
