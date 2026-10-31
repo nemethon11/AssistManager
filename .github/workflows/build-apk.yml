@@ -34,6 +34,9 @@ jobs:
       - name: Установка зависимостей
         run: npm ci
 
+      - name: Проверки веб-части (npm test)
+        run: npm test
+
       - name: Синхронизация веб-части с Android
         run: npx cap sync android
 

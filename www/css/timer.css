@@ -1,5 +1,5 @@
 /* Экран таймера привычки и карточка «Привычка выполнена». */
-.screen { position: fixed; inset: 0; z-index: 15; background: radial-gradient(ellipse at 50% 85%, rgba(168, 72, 31, .22), transparent 65%), linear-gradient(to bottom, #1a1324, #0e0b13); display: flex; flex-direction: column; padding: env(safe-area-inset-top, 0px) 18px env(safe-area-inset-bottom, 0px); }
+.screen { position: fixed; inset: 0; z-index: 15; background: radial-gradient(ellipse at 50% 85%, rgba(168, 72, 31, .22), transparent 65%), linear-gradient(to bottom, #1a1324, #0e0b13); display: flex; flex-direction: column; padding: var(--sat) 18px var(--sab); }
 .screen-top { display: flex; align-items: center; gap: 12px; padding: 12px 0; max-width: 34rem; width: 100%; margin: 0 auto; }
 .screen-title { flex: 1; min-width: 0; font-family: var(--f-read); font-weight: 700; text-transform: uppercase; letter-spacing: .02em; color: var(--name); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
 .tbtn { font-family: var(--f-ui); text-transform: uppercase; letter-spacing: .1em; font-size: 13px; padding: 8px 12px; color: var(--fg); border: 1px solid rgba(203, 196, 181, .25); background: rgba(9, 9, 9, .55); }

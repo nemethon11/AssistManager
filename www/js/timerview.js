@@ -48,8 +48,24 @@ export function initTimerView(callbacks) {
   $('doneOk').onclick = () => { $('doneCard').hidden = true; nextCard(); };
 }
 
+// Пока открыт таймер, экран не должен гаснуть — иначе приложение «свернётся» и время встанет.
+let wake = null;
+async function keepAwake(on) {
+  try {
+    if (on && 'wakeLock' in navigator && !wake && !document.hidden) {
+      wake = await navigator.wakeLock.request('screen');
+      wake.addEventListener('release', () => { wake = null; });
+    } else if (!on && wake) {
+      await wake.release();
+      wake = null;
+    }
+  } catch (e) { /* экран может гаснуть — таймер просто встанет на паузу */ }
+}
+document.addEventListener('visibilitychange', () => { if (habit && document.visibilityState === 'visible') keepAwake(true); });
+
 export function openTimer(h) {
   habit = h;
+  keepAwake(true);
   $('tvName').textContent = h.name;
   $('timerView').hidden = false;
   document.body.classList.add('covered');
@@ -68,6 +84,7 @@ export function openTimer(h) {
 export function closeTimer() {
   if (timer) { timer.destroy(); timer = null; }
   habit = null;
+  keepAwake(false);
   $('timerView').hidden = true;
   document.body.classList.remove('covered');
   cb.onChange({});

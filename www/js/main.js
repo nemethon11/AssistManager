@@ -10,6 +10,7 @@ import { initSettings } from './settings.js';
 import * as Snd from './sound.js';
 import * as Rem from './reminders.js';
 import { syncWidget } from './widget.js';
+import { initBack } from './back.js';
 import { currentBookInfo } from './reader.js';
 import { startReading } from './readsession.js';
 import { readStats, fmtDur } from './stats.js';
@@ -320,6 +321,7 @@ Snd.startAmbient(
   () => levelOf(H.streak()),
 );
 initSettings();
+initBack(closeSheet, () => editing, () => $('editBtn').click());
 $('readBtn').onclick = () => startReading(null, { onChange: onReadChange });
 renderBook();
 initTimerView({
@@ -329,6 +331,17 @@ initTimerView({
 if (H.applyFreezes()) setTimeout(() => toast('Заморозка спасла серию'), 600);
 H.recompute();
 render();
+// Если приложение открыто в полночь, новый день должен начаться сам, без перезапуска.
+let dayShown = today();
+setInterval(() => {
+  if (today() === dayShown) return;
+  dayShown = today();
+  if (H.applyFreezes()) toast('Заморозка спасла серию');
+  H.recompute();
+  render();
+  renderBook();
+}, 30000);
+
 // Вернулись в приложение (возможно, на следующий день) — пересчитать.
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) { Rem.reschedule(); syncWidget(); return; }   // уходим в фон — свежие напоминания и виджет

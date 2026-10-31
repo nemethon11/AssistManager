@@ -45,7 +45,7 @@
 .meta b { color: var(--name); font-variant-numeric: tabular-nums; }
 .freeze b { color: var(--ice); }
 
-.toast { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); z-index: 30; background: var(--panel); border: 1px solid var(--ochre); padding: 8px 14px; font-size: 14px; opacity: 0; transition: opacity .3s; pointer-events: none; max-width: 90vw; text-align: center; }
+.toast { position: fixed; top: calc(12px + var(--sat)); left: 50%; transform: translateX(-50%); z-index: 30; background: var(--panel); border: 1px solid var(--ochre); padding: 8px 14px; font-size: 14px; opacity: 0; transition: opacity .3s; pointer-events: none; max-width: 90vw; text-align: center; }
 .toast.on { opacity: 1; }
 
 .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }

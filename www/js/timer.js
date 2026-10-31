@@ -9,16 +9,26 @@ export const secsToday = id => ((S.secs[today()] || {})[id]) || 0;
 /* ---------- сворачивание приложения ---------- */
 const appListeners = new Set();
 let appHooked = false;
+
+// Плагин App из Capacitor (в браузере его нет). Регистрируем один раз и отдаём всем, кому нужен.
+let appPlug;
+export function appPlugin() {
+  if (appPlug === undefined) {
+    try {
+      const cap = window.Capacitor;
+      appPlug = cap && cap.isNativePlatform && cap.isNativePlatform() ? cap.registerPlugin('App') : null;
+    } catch (e) { appPlug = null; }
+  }
+  return appPlug;
+}
+
 function hookApp() {
   if (appHooked) return;
   appHooked = true;
   const emit = active => appListeners.forEach(f => f(active));
   document.addEventListener('visibilitychange', () => emit(!document.hidden));
-  try {
-    // Плагин App из Capacitor; в браузере его нет — тогда хватает visibilitychange.
-    const App = window.Capacitor && window.Capacitor.registerPlugin && window.Capacitor.registerPlugin('App');
-    if (App && App.addListener) App.addListener('appStateChange', s => emit(!!s.isActive));
-  } catch (e) { /* без плагина */ }
+  const App = appPlugin();
+  if (App && App.addListener) App.addListener('appStateChange', s => emit(!!s.isActive));
 }
 // Подписка на «приложение стало активным / ушло в фон». Возвращает функцию отписки.
 export function onAppActive(cb) {

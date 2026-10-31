@@ -15,6 +15,11 @@
   --f-read: "PT Serif", Georgia, "Times New Roman", serif;
   --f-disp: "Old Standard TT", "PT Serif", Georgia, serif;
   color-scheme: dark;
+  /* Отступы от краёв экрана (вырез, строка состояния, жесты). Берём большее из системных env() и переменных Capacitor. */
+  --sat: max(env(safe-area-inset-top, 0px), var(--safe-area-inset-top, 0px));
+  --sab: max(env(safe-area-inset-bottom, 0px), var(--safe-area-inset-bottom, 0px));
+  --sal: max(env(safe-area-inset-left, 0px), var(--safe-area-inset-left, 0px));
+  --sar: max(env(safe-area-inset-right, 0px), var(--safe-area-inset-right, 0px));
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--fg); }
@@ -22,8 +27,8 @@ body {
   font-family: var(--f-read);
   font-size: 16px;
   line-height: 1.45;
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-top: var(--sat);
+  padding-bottom: var(--sab);
   -webkit-tap-highlight-color: transparent;
 }
 [hidden] { display: none !important; }
@@ -45,5 +50,5 @@ h2 { font-family: var(--f-disp); font-weight: 700; font-size: 20px; margin: 0; c
 .check-l input { width: 22px; height: 22px; accent-color: var(--accent); }
 
 .sheet { position: fixed; inset: 0; z-index: 20; background: rgba(0, 0, 0, .8); display: flex; align-items: flex-end; }
-.sheet-in { width: 100%; max-width: 34rem; margin: 0 auto; background: var(--panel); border-top: 1px solid var(--line); padding: 20px 18px calc(20px + env(safe-area-inset-bottom, 0px)); }
+.sheet-in { width: 100%; max-width: 34rem; margin: 0 auto; background: var(--panel); border-top: 1px solid var(--line); padding: 20px 18px calc(20px + var(--sab)); }
 .sheet-btns { display: flex; gap: 10px; margin-top: 22px; }

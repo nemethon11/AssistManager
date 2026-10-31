@@ -1,11 +1,11 @@
 /* Читалка. Масляный фон на весь экран, тёмная колонка с текстом, внизу «варианты реплик». */
 #readerView { --fs: 19px; --violet: #9d86e0; position: fixed; inset: 0; z-index: 16; background: var(--bg); color: var(--fg); font-family: var(--f-read); overflow: hidden; }
-#readerView::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--panel); }
+#readerView::before { content: ""; position: fixed; inset: 0 0 auto; height: var(--sat); z-index: 10; background: var(--panel); }
 #paint { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }
 
 #readerView .app { position: relative; z-index: 1; height: 100%; width: 100%; max-width: 34rem; margin-left: auto; display: flex; flex-direction: column;
   background: linear-gradient(to bottom, rgba(9, 9, 9, 0) 0, rgba(9, 9, 9, .55) 18%, var(--panel) 40%); box-shadow: -30px 0 60px rgba(0, 0, 0, .6);
-  padding: env(safe-area-inset-top, 0px) max(30px, calc(env(safe-area-inset-right, 0px) + 22px)) env(safe-area-inset-bottom, 0px) max(18px, env(safe-area-inset-left, 0px)); }
+  padding: var(--sat) max(30px, calc(var(--sar) + 22px)) var(--sab) max(18px, var(--sal)); }
 @media (min-width: 700px) { #readerView .app { margin-right: 6vw; } }
 #readerView .col { width: 100%; }
 
@@ -52,13 +52,13 @@
 #readerView .opt:disabled { opacity: .35; cursor: default; }
 #backBtn { justify-self: start; }
 #autoBtn { justify-self: end; }
-.rail { position: absolute; top: 70px; bottom: 24px; right: max(10px, env(safe-area-inset-right, 0px)); width: 1px; background: linear-gradient(to bottom, transparent, rgba(203, 196, 181, .35) 12%, rgba(203, 196, 181, .35) 88%, transparent); }
+.rail { position: absolute; top: 70px; bottom: 24px; right: max(10px, var(--sar)); width: 1px; background: linear-gradient(to bottom, transparent, rgba(203, 196, 181, .35) 12%, rgba(203, 196, 181, .35) 88%, transparent); }
 .rail::before, .rail::after { content: ""; position: absolute; left: -4px; width: 9px; height: 1px; background: rgba(203, 196, 181, .5); }
 .rail::before { top: 12%; } .rail::after { bottom: 12%; }
 .rail i { position: absolute; left: -3px; width: 7px; height: 7px; border-radius: 50%; background: var(--name); top: 12%; transform: translateY(-50%); transition: top .3s; }
 
 /* листы «Книги» и «Настройки» */
-.rsheet { position: absolute; inset: 0; z-index: 20; background: var(--panel); display: flex; flex-direction: column; padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px)); }
+.rsheet { position: absolute; inset: 0; z-index: 20; background: var(--panel); display: flex; flex-direction: column; padding: var(--sat) max(16px, var(--sar)) var(--sab) max(16px, var(--sal)); }
 .rsheet .col { max-width: 34rem; margin-inline: auto; }
 .rsheet .top { display: flex; align-items: center; gap: 8px; padding-block: 14px 12px; }
 .sheet-body { flex: 1; min-height: 0; overflow-y: auto; padding-block: 8px 24px; }

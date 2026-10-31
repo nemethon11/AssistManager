@@ -53,6 +53,7 @@ android/                 Android-проект (Capacitor)
   app/src/main/java/...  Kotlin: MainActivity, виджет, мост WidgetBridge
   app/src/test/...       Kotlin: модульные тесты логики виджета
 keystore/debug.keystore  постоянный ключ подписи debug-APK
+tests/                   автоматические проверки (npm test): логика, экраны, читалка, PDF, напоминания, «Назад»
 tools/IconGen.cs         рисовалка иконки и заставки
 .github/workflows/       автосборка APK в GitHub Actions
 ```
@@ -65,7 +66,7 @@ tools/IconGen.cs         рисовалка иконки и заставки
 
 ## Как собирается APK
 
-Каждый пуш в `main` запускает GitHub Actions (`.github/workflows/build-apk.yml`): ставятся Node.js и JDK, веб-часть синхронизируется в Android-проект через Capacitor, запускаются Kotlin-тесты, собирается debug-APK и публикуется в GitHub Releases под именем `AssistManager.apk`. Ничего ставить на компьютер не нужно.
+Каждый пуш в `main` запускает GitHub Actions (`.github/workflows/build-apk.yml`): ставятся Node.js и JDK, запускаются проверки веб-части (`npm test`, 129 проверок), веб-часть синхронизируется в Android-проект через Capacitor, запускаются Kotlin-тесты, собирается debug-APK и публикуется в GitHub Releases под именем `AssistManager.apk`. Если хоть одна проверка упадёт, APK не публикуется, и прошлая рабочая версия остаётся доступной. Ничего ставить на компьютер не нужно.
 
 Если хочется собрать у себя: `npm ci`, `npx cap sync android`, затем в папке `android` команда `./gradlew assembleDebug` (нужны Node.js, JDK 21 и Android SDK).
 
