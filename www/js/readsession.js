@@ -8,6 +8,7 @@ import { openReader } from './reader.js';
 import { createFlame, levelOf } from './flame.js';
 import { showDone, fmt } from './timerview.js';
 import { addReadSecs, addParas } from './stats.js';
+import * as Snd from './sound.js';
 
 const IDLE_SEC = 120;
 const FREE_ID = '_free';          // «свободное» чтение без привычки
@@ -34,6 +35,7 @@ export function startReading(habit, { onChange } = {}) {
       // Время вышло: отмечаем привычку, вспыхиваем, поздравляем. Читать можно дальше — время копится.
       const ev = habit && !H.isDone(habit.id) ? H.setDone(habit.id, true) : {};
       if (flame) flame.burst();
+      Snd.timerEnd();
       try { navigator.vibrate && navigator.vibrate([30, 40, 60]); } catch (e) { /* без вибрации */ }
       if (habit) showDone(habit);
       if (onChange) onChange(ev);
@@ -50,7 +52,7 @@ export function startReading(habit, { onChange } = {}) {
 
   openReader({
     onActivity: () => timer.activity(),
-    onAdvance: paras => addParas(paras),
+    onAdvance: paras => { addParas(paras); Snd.page(); },
     onClose: () => {
       timer.destroy();
       hud.innerHTML = '';

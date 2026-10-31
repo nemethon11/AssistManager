@@ -1,9 +1,12 @@
 // Запуск приложения и главный экран.
-import { S, load, today } from './store.js';
+import { S, load, save, today } from './store.js';
 import * as H from './habits.js';
 import { LEVELS, levelOf, createFlame } from './flame.js';
 import { secsToday } from './timer.js';
-import { initTimerView, openTimer } from './timerview.js';
+import { initTimerView, openTimer, showCard } from './timerview.js';
+import { rankInfo, RANKS } from './xp.js';
+import { initSettings } from './settings.js';
+import * as Snd from './sound.js';
 import { currentBookInfo } from './reader.js';
 import { startReading } from './readsession.js';
 import { readStats, fmtDur } from './stats.js';
@@ -121,11 +124,49 @@ function renderWeek() {
   $('weekNote').textContent = w.done + ' из ' + w.of;
 }
 
+function renderRank() {
+  const r = rankInfo();
+  $('xpTotal').textContent = r.xp + ' XP';
+  $('rankName').textContent = r.rank.name;
+  $('rankLine').textContent = r.rank.line;
+  $('xpFill').style.width = r.pct + '%';
+  $('rankNext').textContent = r.next ? 'до «' + r.next.name + '» — ' + r.toNext + ' XP' : 'высший ранг — выше только забвение';
+  const box = $('ranks');
+  box.textContent = '';
+  RANKS.forEach((k, i) => {
+    const row = document.createElement('div');
+    row.className = 'rk' + (i < r.i ? ' got' : i === r.i ? ' cur' : '');
+    row.innerHTML = '<span></span><em></em>';
+    row.firstChild.textContent = k.name;
+    row.lastChild.textContent = k.min + ' XP';
+    box.append(row);
+  });
+}
+
+// Новый уровень огня или ранг: объявляем карточкой и звуком. Уровень «запоминаем» в обе стороны, ранг — только вверх.
+function checkMilestones() {
+  const li = levelOf(H.streak());
+  if (li > S.levelSeen) {
+    showCard({ kicker: 'Новый уровень огня', name: LEVELS[li].name, skill: ['ЭСПРИ-ДЕ-КОР', 'Огонь разгорелся. Вокруг даже стало теплее.'] });
+    setTimeout(Snd.levelUp, 700);
+  }
+  S.levelSeen = li;
+  const r = rankInfo();
+  if (r.i > S.rankSeen) {
+    showCard({ kicker: 'Новый ранг', name: r.rank.name, skill: ['ВНУТРЕННЯЯ ИМПЕРИЯ', r.rank.line] });
+    setTimeout(Snd.rankUp, 700);
+    S.rankSeen = r.i;
+  }
+  save();
+}
+
 function render() {
   renderTop();
   renderHabits();
   renderWeek();
   renderLevels();
+  renderRank();
+  checkMilestones();
 }
 
 async function renderBook() {
@@ -151,6 +192,7 @@ function onReadChange(ev) { render(); renderBook(); showEvents(ev || {}); }
 function showEvents(ev) {
   if (ev.dayDone) {
     flame.burst();
+    Snd.flash();
     const c = $('count');
     c.classList.add('bump');
     setTimeout(() => c.classList.remove('bump'), 420);
@@ -164,6 +206,7 @@ function tapHabit(h) {
   if (h.kind === 'reading') { startReading(h, { onChange: onReadChange }); return; }
   if (h.minutes > 0) { openTimer(h); return; }
   const ev = H.toggle(h.id);
+  ev.on ? Snd.check() : Snd.uncheck();
   try { navigator.vibrate && navigator.vibrate(ev.on ? 12 : 6); } catch (e) { /* без вибрации */ }
   render();
   showEvents(ev);
@@ -233,7 +276,15 @@ $('addBtn').onclick = () => openSheet(null);
 /* ---------- старт ---------- */
 load();
 flame = createFlame($('flame'), levelOf(H.streak()));
-$('flame').addEventListener('click', () => flame.poke());
+$('flame').addEventListener('click', () => { flame.poke(); Snd.crackle(6); });
+// Звук в браузере разрешён только после первого касания.
+document.addEventListener('pointerdown', Snd.unlock, { passive: true });
+// Тихий треск огня — пока виден главный экран; чем выше уровень, тем чаще.
+Snd.startAmbient(
+  () => !document.hidden && !document.body.classList.contains('covered') && $('sheet').hidden && $('settingsView').hidden,
+  () => levelOf(H.streak()),
+);
+initSettings();
 $('readBtn').onclick = () => startReading(null, { onChange: onReadChange });
 renderBook();
 initTimerView({

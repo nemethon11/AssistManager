@@ -3,6 +3,20 @@
 
 .hearth { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; }
 #flame { width: 100%; max-width: 340px; aspect-ratio: 1 / 1.05; display: block; cursor: pointer; touch-action: manipulation; }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding-top: 4px; }
+.brand { font-family: var(--f-ui); font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+
+.rank-now { margin-top: 12px; font-family: var(--f-disp); font-weight: 700; font-size: 22px; line-height: 1.2; color: var(--ochre); }
+.rank-line { color: var(--fg); font-size: 15px; margin-top: 4px; }
+.xp-bar { height: 4px; background: var(--line); margin-top: 12px; }
+.xp-bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .6s ease; }
+.rank-next { font-family: var(--f-ui); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.ranks { display: flex; flex-direction: column; margin-top: 12px; }
+.rk { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 14px; opacity: .45; }
+.rk em { font-style: normal; font-family: var(--f-ui); font-size: 12px; letter-spacing: .06em; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rk.got { opacity: 1; }
+.rk.cur { opacity: 1; color: var(--ochre); font-weight: 700; }
+
 .bookcard { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
 .bk-title { font-weight: 700; text-transform: uppercase; letter-spacing: .02em; color: var(--name); overflow-wrap: anywhere; }
 .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px; }

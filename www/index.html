@@ -12,6 +12,8 @@
 </head>
 <body>
 <main class="wrap" id="home">
+  <div class="topbar"><span class="brand">AssistManager</span><button class="link" id="gearBtn" type="button">Настройки</button></div>
+
   <section class="hearth" aria-label="Серия">
     <div class="toast" id="toast" role="status"></div>
     <canvas id="flame" aria-label="Огонёк серии" title="Нажми, чтобы раздуть"></canvas>
@@ -32,6 +34,16 @@
       <button class="btn add-btn" id="addBtn" type="button">+ Новая привычка</button>
       <p class="hint">Делай их крошечными. День засчитывается, когда отмечены все.</p>
     </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Ранг</h2><small id="xpTotal"></small></div>
+    <div class="rank-now" id="rankName"></div>
+    <div class="rank-line" id="rankLine"></div>
+    <div class="xp-bar"><i id="xpFill"></i></div>
+    <div class="rank-next" id="rankNext"></div>
+    <div class="ranks" id="ranks"></div>
+    <p class="hint">XP: +10 за привычку, +20 за день, где сделано всё, +2 за минуту чтения.</p>
   </section>
 
   <section>
@@ -58,6 +70,38 @@
     <div class="levels" id="levels"></div>
   </section>
 </main>
+
+<!-- Настройки -->
+<div class="screen" id="settingsView" hidden>
+  <div class="screen-top">
+    <button class="tbtn" id="setBack" type="button">← Назад</button>
+    <div class="screen-title">Настройки</div>
+  </div>
+  <div class="set-body">
+    <div class="sec">Звук</div>
+    <label class="check-l"><input type="checkbox" id="optSound"><span>Звуки (отметки, вспышки, листание)</span></label>
+    <label class="check-l"><input type="checkbox" id="optAmbient"><span>Тихий треск огня на главном экране</span></label>
+
+    <div class="sec">Резервная копия</div>
+    <p class="note">Данные хранятся только на этом телефоне. Копия — файл, который можно сохранить на Диск или отправить себе.</p>
+    <label class="check-l"><input type="checkbox" id="optBooks"><span>Включить книги (файл будет тяжелее)</span></label>
+    <div class="tv-opts">
+      <button class="opt first" id="bkExport" type="button"><span class="num">1.</span> <span>«Сохранить копию.»</span></button>
+      <label class="opt pick"><span class="num">2.</span> <span>«Восстановить из файла.»</span><input type="file" id="bkImport"></label>
+    </div>
+    <div class="restore" id="restoreBox" hidden>
+      <p class="note" id="restoreInfo"></p>
+      <button class="opt" id="restoreYes" type="button"><span class="num">1.</span> <span>«Да, заменить.»</span></button>
+      <button class="opt" id="restoreNo" type="button"><span class="num">2.</span> <span>«Нет, пусть всё остаётся как есть.»</span></button>
+    </div>
+    <div class="msg" id="setMsg" role="status"></div>
+
+    <div class="sec">Из старого «Огонька»</div>
+    <p class="note">Если пользовался прототипом, вставь его код резервной копии — привычки и серия перенесутся.</p>
+    <textarea class="field" id="legacyCode" rows="3" spellcheck="false" placeholder="Код из «Огонька»"></textarea>
+    <div class="row"><button class="pill" id="legacyBtn" type="button">Восстановить из кода</button></div>
+  </div>
+</div>
 
 <!-- Экран таймера привычки -->
 <div class="screen" id="timerView" hidden>
@@ -148,7 +192,7 @@
 <!-- Уведомление «Привычка выполнена» -->
 <div class="done-card" id="doneCard" hidden>
   <div class="done-in">
-    <div class="done-k">Привычка выполнена</div>
+    <div class="done-k" id="doneK">Привычка выполнена</div>
     <div class="done-n" id="doneName"></div>
     <div class="skill" id="doneSkill"></div>
     <button class="opt" id="doneOk" type="button"><span class="num">1.</span> <span>«Дальше.»</span></button>

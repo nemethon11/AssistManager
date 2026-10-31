@@ -30,6 +30,9 @@ function fresh() {
     reader: { current: 'sample', pos: {}, mode: 'short', fs: 19, speed: 1 },
     // Статистика чтения по дням: секунды живого чтения и прочитанные абзацы.
     read: { secs: {}, paras: {} },
+    settings: { sound: true, ambient: true },
+    rankSeen: 0,    // самый высокий ранг, о котором уже объявили
+    levelSeen: 0,   // уровень огня, о котором уже объявили
   };
 }
 
@@ -48,6 +51,7 @@ export function normalize(d) {
   for (const k of Object.keys(f)) if (d[k] === undefined) d[k] = f[k];
   d.reader = Object.assign({}, f.reader, d.reader);
   d.read = Object.assign({}, f.read, d.read);
+  d.settings = Object.assign({}, f.settings, d.settings);
   d.habits.forEach(h => { h.kind = h.kind || 'check'; h.minutes = h.minutes || 0; });
   return d;
 }

@@ -2,6 +2,7 @@
 import * as H from './habits.js';
 import { HabitTimer, secsToday } from './timer.js';
 import { createFlame, levelOf } from './flame.js';
+import * as Snd from './sound.js';
 
 const $ = id => document.getElementById(id);
 
@@ -40,10 +41,11 @@ export function initTimerView(callbacks) {
   $('tvManual').onclick = () => {
     if (!habit) return;
     const ev = H.toggle(habit.id);
+    ev.on ? Snd.check() : Snd.uncheck();
     cb.onChange(ev);
     paint();
   };
-  $('doneOk').onclick = () => { $('doneCard').hidden = true; };
+  $('doneOk').onclick = () => { $('doneCard').hidden = true; nextCard(); };
 }
 
 export function openTimer(h) {
@@ -75,6 +77,7 @@ function goalReached(h) {
   // Отмечаем автоматически и празднуем. Время при этом продолжает идти.
   const ev = H.isDone(h.id) ? {} : H.setDone(h.id, true);
   flame.burst();
+  Snd.timerEnd();
   try { navigator.vibrate && navigator.vibrate([30, 40, 60]); } catch (e) { /* без вибрации */ }
   showDone(h);
   cb.onChange(ev);
@@ -82,8 +85,21 @@ function goalReached(h) {
 
 // Красивое уведомление «Привычка выполнена».
 export function showDone(h) {
-  $('doneName').textContent = h.name;
-  $('doneSkill').innerHTML = skillHtml(DONE_LINES[Math.floor(Math.random() * DONE_LINES.length)]);
+  showCard({ kicker: 'Привычка выполнена', name: h.name, skill: DONE_LINES[Math.floor(Math.random() * DONE_LINES.length)] });
+}
+
+// Карточка-уведомление на весь экран. Если одна уже открыта, следующие ждут в очереди.
+const cardQueue = [];
+export function showCard(card) {
+  cardQueue.push(card);
+  if ($('doneCard').hidden) nextCard();
+}
+function nextCard() {
+  const c = cardQueue.shift();
+  if (!c) return;
+  $('doneK').textContent = c.kicker;
+  $('doneName').textContent = c.name;
+  $('doneSkill').innerHTML = c.skill ? skillHtml(c.skill) : '';
   $('doneCard').hidden = false;
 }
 
