@@ -72,7 +72,8 @@ function renderHabits() {
     if (editing) {
       const go = document.createElement('span');
       go.className = 'go';
-      go.textContent = 'Править';
+      go.textContent = '›';
+      go.setAttribute('aria-label', 'Править');
       b.append(go);
     }
     b.onclick = () => (editing ? openSheet(h.id) : tapHabit(h));

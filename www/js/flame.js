@@ -96,9 +96,12 @@ export function createFlame(cv, startLevel = 0) {
     cx.clearRect(0, 0, W, H);
     const baseY = H * .88, fh = H * cur.h * (1 + boost * .25), fw = W * .2 * (.7 + cur.h * .6) * (1 + boost * .2);
 
-    // свечение
-    const g = cx.createRadialGradient(W / 2, baseY - fh * .35, 0, W / 2, baseY - fh * .35, fh * .95);
-    g.addColorStop(0, rgba(cur.c[1], .32 + boost * .25));
+    // Свечение. Радиус не больше расстояния до краёв холста — иначе на краю остаётся резкая светлая рамка.
+    const gx = W / 2, gy = baseY - fh * .35;
+    const gr = Math.max(1, Math.min(fh * .95, gy, H - gy, W / 2));
+    const g = cx.createRadialGradient(gx, gy, 0, gx, gy, gr);
+    g.addColorStop(0, rgba(cur.c[1], .34 + boost * .25));
+    g.addColorStop(.55, rgba(cur.c[1], .12 + boost * .1));
     g.addColorStop(1, rgba(cur.c[0], 0));
     cx.fillStyle = g; cx.fillRect(0, 0, W, H);
 

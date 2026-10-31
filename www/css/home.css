@@ -70,7 +70,7 @@
 .habit.done .nm { color: var(--name); }
 #skillLine { margin-top: 10px; }
 .habit .sub { color: var(--muted); font-family: var(--f-ui); font-size: 12px; letter-spacing: .06em; margin-top: 2px; }
-.habit .go { flex: none; color: var(--muted); font-family: var(--f-ui); font-size: 13px; text-transform: uppercase; letter-spacing: .1em; }
+.habit .go { flex: none; color: var(--ochre); font-size: 26px; line-height: 1; padding: 0 4px; }
 .habit.done { border-color: var(--ochre); background: rgba(207, 156, 76, .08); }
 .habit.done .ic { border-color: var(--ochre); background: var(--ochre); }
 .habit.done .ic svg { opacity: 1; }

@@ -10,7 +10,10 @@
 #readerView .col { width: 100%; }
 
 #readerView .top { flex: none; padding-block: 14px 12px; display: flex; align-items: center; gap: 8px; text-shadow: 0 1px 6px rgba(0, 0, 0, .9); }
-#readerView .top .meta { flex: 1; min-width: 0; }
+/* Две строки: сверху кнопки и таймер, ниже название книги и прогресс — на узком экране они не влезают в одну */
+#readerView .top { flex-wrap: wrap; row-gap: 6px; }
+#readerView .top .meta { order: 5; flex: 1 0 100%; min-width: 0; text-align: left; line-height: 1.25; }
+#readerView .top .hud { margin-left: auto; }
 .btitle { font-weight: 700; text-transform: uppercase; letter-spacing: .02em; font-size: 15px; color: var(--name); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stat { font-family: var(--f-ui); font-size: 12px; letter-spacing: .06em; color: var(--muted); font-variant-numeric: tabular-nums; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hud:empty { display: none; }
@@ -84,8 +87,9 @@ textarea.field { min-height: 140px; resize: vertical; margin-top: 8px; }
 .finds, .marks { display: flex; flex-direction: column; margin-top: 6px; }
 .found { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 16px; line-height: 1.45; color: var(--fg); overflow-wrap: anywhere; }
 .found mark { background: rgba(207, 156, 76, .25); color: var(--ochre); padding: 0 2px; }
-.mark-row { display: flex; align-items: center; gap: 6px; }
-.mark-row .found { flex: 1; min-width: 0; }
+.mark-row { display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--line); }
+.mark-row .found { flex: 1; min-width: 0; border-bottom: 0; }
+.menu-opts .opt, #backRow .opt { justify-content: flex-start; padding-left: 0; }
 .mark-row .del { font-size: 22px; padding: 4px 12px; }
 #findQ { margin-top: 6px; }
 .msg { font-size: 14px; color: var(--accent); margin-top: 10px; min-height: 1.2em; }
