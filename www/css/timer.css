@@ -21,6 +21,36 @@
 .opt:active { color: #f08a6e; }
 .opt.first { border: 1px solid rgba(208, 87, 62, .35); background: radial-gradient(ellipse at center, rgba(208, 87, 62, .16), transparent 75%); justify-content: center; padding: 16px 22px; font-size: 19px; }
 
+/* История: календарь и график чтения */
+.cal-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px; }
+.cal-nav .tbtn:disabled { opacity: .3; }
+.cal-title { font-family: var(--f-disp); font-weight: 700; font-size: 22px; color: var(--ochre); text-transform: capitalize; }
+.cal-head, .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.cal-head { margin-top: 14px; font-family: var(--f-ui); font-size: 12px; letter-spacing: .1em; color: var(--muted); text-align: center; }
+.cal { margin-top: 6px; }
+.cd { aspect-ratio: 1; display: grid; place-items: center; border: 1.5px solid var(--line); border-radius: 50%; font-family: var(--f-ui); font-size: 14px; color: var(--fg); background: transparent; }
+.cd.blank { border: 0; }
+.cd.future { opacity: .25; border-style: dashed; }
+.cd.full { background: rgba(208, 87, 62, .28); border-color: var(--accent); color: var(--name); }
+.cd.frozen { background: rgba(124, 196, 255, .16); border-color: var(--ice); }
+.cd.partial { border-color: var(--ochre); color: var(--ochre); }
+.cd.today { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.cd.sel { outline: 2px solid var(--name); outline-offset: 2px; }
+.cal-legend { margin-top: 12px; font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.cal-legend i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--line); display: inline-block; }
+.cal-legend i.full { background: rgba(208, 87, 62, .28); border-color: var(--accent); }
+.cal-legend i.frozen { background: rgba(124, 196, 255, .16); border-color: var(--ice); }
+.cal-legend i.partial { border-color: var(--ochre); }
+.cal-detail { margin-top: 14px; padding: 10px 12px; border-left: 2px solid var(--ochre); font-size: 15px; line-height: 1.5; }
+.cal-detail b { color: var(--name); }
+.bars { display: flex; align-items: flex-end; gap: 4px; height: 130px; margin-top: 10px; }
+.bar { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 3px; font-family: var(--f-ui); font-size: 10px; color: var(--muted); }
+.bar em { font-style: normal; min-height: 12px; color: var(--fg); font-variant-numeric: tabular-nums; }
+.bar .bf { width: 100%; flex: 1; min-height: 0; display: flex; align-items: flex-end; background: rgba(255, 255, 255, .03); }
+.bar .bf i { display: block; width: 100%; background: var(--ochre); min-height: 0; }
+.bar.today .bf i { background: var(--accent); }
+.bar.today span { color: var(--name); font-weight: 600; }
+
 /* Настройки */
 .set-body { flex: 1; min-height: 0; overflow-y: auto; max-width: 34rem; width: 100%; margin: 0 auto; padding-bottom: 32px; }
 .field.time { max-width: 12rem; color-scheme: dark; }

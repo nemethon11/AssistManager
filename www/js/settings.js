@@ -70,8 +70,8 @@ function askRestore(parsed) {
 
 export function initSettings() {
   initReminders();
-  $('gearBtn').onclick = () => { paint(); say(''); remSay(''); $('restoreBox').hidden = true; $('settingsView').hidden = false; };
-  $('setBack').onclick = () => { $('settingsView').hidden = true; };
+  $('gearBtn').onclick = () => { paint(); say(''); remSay(''); $('restoreBox').hidden = true; $('settingsView').hidden = false; document.body.classList.add('covered'); };
+  $('setBack').onclick = () => { $('settingsView').hidden = true; document.body.classList.remove('covered'); };
 
   $('optSound').onchange = e => { S.settings.sound = e.target.checked; save(); paint(); if (e.target.checked) { Snd.unlock(); Snd.check(); } };
   $('optAmbient').onchange = e => { S.settings.ambient = e.target.checked; save(); if (e.target.checked) { Snd.unlock(); Snd.crackle(4); } };

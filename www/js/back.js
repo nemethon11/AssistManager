@@ -10,6 +10,7 @@ export function goBack(closeHabitSheet, isEditing, stopEditing) {
   if (open('doneCard')) { $('doneOk').click(); return true; }
   if (open('sheet')) { closeHabitSheet(); return true; }
   if (open('settingsView')) { $('setBack').click(); return true; }
+  if (open('historyView')) { $('hiBack').click(); return true; }
   if (open('readerView')) {
     if (open('lib')) { $('libClose').click(); return true; }
     if (open('set')) { $('setClose').click(); return true; }

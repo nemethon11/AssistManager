@@ -14,7 +14,10 @@
 <body>
 <canvas id="bg" aria-hidden="true"></canvas>
 <main class="wrap" id="home">
-  <div class="topbar"><span class="brand">AssistManager</span><button class="link" id="gearBtn" type="button">Настройки</button></div>
+  <div class="topbar">
+    <span class="brand">AssistManager</span>
+    <span class="tb-right"><button class="link" id="histBtn" type="button">История</button><button class="link" id="gearBtn" type="button">Настройки</button></span>
+  </div>
 
   <section class="hearth" aria-label="Серия">
     <div class="toast" id="toast" role="status"></div>
@@ -73,6 +76,31 @@
     <div class="levels" id="levels"></div>
   </section>
 </main>
+
+<!-- История -->
+<div class="screen" id="historyView" hidden>
+  <div class="screen-top">
+    <button class="tbtn" id="hiBack" type="button">← Назад</button>
+    <div class="screen-title">История</div>
+  </div>
+  <div class="set-body">
+    <div class="cal-nav">
+      <button class="tbtn" id="calPrev" type="button" aria-label="Прошлый месяц">◂</button>
+      <div class="cal-title" id="calTitle"></div>
+      <button class="tbtn" id="calNext" type="button" aria-label="Следующий месяц">▸</button>
+    </div>
+    <div class="cal-head"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+    <div class="cal" id="cal"></div>
+    <div class="cal-legend"><i class="full"></i> день закрыт <i class="frozen"></i> заморозка <i class="partial"></i> частично</div>
+    <div class="cal-detail" id="calDetail"></div>
+
+    <div class="sec">Чтение — последние 14 дней, минуты</div>
+    <div class="bars" id="bars"></div>
+
+    <div class="sec">Итоги</div>
+    <div class="stats" id="histStats"></div>
+  </div>
+</div>
 
 <!-- Настройки -->
 <div class="screen" id="settingsView" hidden>

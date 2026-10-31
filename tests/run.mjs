@@ -20,6 +20,7 @@ const tests = [
   ['app.test.mjs', www, 'запуск, XP, ранги, звуки, копия'],
   ['back-button.test.mjs', www, 'кнопка «Назад», отступы'],
   ['reorder.test.mjs', www, 'порядок привычек'],
+  ['history.test.mjs', www, 'история: календарь, график, итоги'],
 ];
 
 let total = 0, failed = 0;

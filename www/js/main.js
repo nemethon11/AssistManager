@@ -11,6 +11,7 @@ import * as Snd from './sound.js';
 import * as Rem from './reminders.js';
 import { syncWidget } from './widget.js';
 import { initBack } from './back.js';
+import { initHistory } from './history.js';
 import { currentBookInfo } from './reader.js';
 import { startReading } from './readsession.js';
 import { readStats, fmtDur } from './stats.js';
@@ -338,6 +339,7 @@ Snd.startAmbient(
   () => levelOf(H.streak()),
 );
 initSettings();
+initHistory();
 initBack(closeSheet, () => editing, () => $('editBtn').click());
 $('readBtn').onclick = () => startReading(null, { onChange: onReadChange });
 renderBook();
