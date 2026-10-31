@@ -8,6 +8,7 @@ import { paint } from './paint.js';
 import { rankInfo, RANKS } from './xp.js';
 import { initSettings } from './settings.js';
 import * as Snd from './sound.js';
+import * as Rem from './reminders.js';
 import { currentBookInfo } from './reader.js';
 import { startReading } from './readsession.js';
 import { readStats, fmtDur } from './stats.js';
@@ -189,6 +190,14 @@ function render() {
   renderLevels();
   renderRank();
   checkMilestones();
+  scheduleSoon();
+}
+
+// Напоминания пересчитываем после любых изменений, но не на каждый чих.
+let remT;
+function scheduleSoon() {
+  clearTimeout(remT);
+  remT = setTimeout(Rem.reschedule, 1500);
 }
 
 async function renderBook() {
@@ -321,7 +330,8 @@ H.recompute();
 render();
 // Вернулись в приложение (возможно, на следующий день) — пересчитать.
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) {
+  if (document.hidden) { Rem.reschedule(); return; }   // уходим в фон — ставим свежие напоминания
+  {
     if (H.applyFreezes()) toast('Заморозка спасла серию');
     H.recompute();
     render();

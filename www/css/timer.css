@@ -23,6 +23,7 @@
 
 /* Настройки */
 .set-body { flex: 1; min-height: 0; overflow-y: auto; max-width: 34rem; width: 100%; margin: 0 auto; padding-bottom: 32px; }
+.field.time { max-width: 12rem; color-scheme: dark; }
 .opt.pick { position: relative; cursor: pointer; }
 .opt.pick input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 .restore { border: 1px solid var(--accent); padding: 8px 12px; margin-top: 10px; }

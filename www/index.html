@@ -85,6 +85,19 @@
     <label class="check-l"><input type="checkbox" id="optSound"><span>Звуки (отметки, вспышки, листание)</span></label>
     <label class="check-l"><input type="checkbox" id="optAmbient"><span>Тихий треск огня на главном экране</span></label>
 
+    <div class="sec">Напоминания</div>
+    <p class="note">Если привычки не сделаны, огонёк напомнит голосом внутреннего навыка. Работает, даже когда приложение закрыто.</p>
+    <label class="check-l"><input type="checkbox" id="optRemind"><span>Напоминать о привычках</span></label>
+    <div id="remindBox" hidden>
+      <label class="field-l" for="remTime">Во сколько напомнить</label>
+      <input class="field time" id="remTime" type="time">
+      <label class="check-l"><input type="checkbox" id="optEvening"><span>Вечером предупредить, что серия сгорит</span></label>
+      <label class="field-l" for="eveTime">Время вечернего предупреждения</label>
+      <input class="field time" id="eveTime" type="time">
+      <div class="row"><button class="pill" id="remTest" type="button">Прислать пробное через 5 секунд</button></div>
+    </div>
+    <div class="msg" id="remMsg" role="status"></div>
+
     <div class="sec">Резервная копия</div>
     <p class="note">Данные хранятся только на этом телефоне. Копия — файл, который можно сохранить на Диск или отправить себе.</p>
     <label class="check-l"><input type="checkbox" id="optBooks"><span>Включить книги (файл будет тяжелее)</span></label>
